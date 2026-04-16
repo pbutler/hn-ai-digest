@@ -25,7 +25,9 @@ try:
 except ImportError:  # pragma: no cover
     zvec = None  # type: ignore[assignment]
 
-BASE_DIR = Path("/Users/pbutler/Documents/HackerNews")
+CACHE_DIR = Path.home() / ".cache" / "hn-ai-digest"
+CONFIG_DIR = Path.home() / ".config" / "hn-ai-digest"
+ENV_FILE = CONFIG_DIR / "env"
 DEFAULT_EMBED_MODEL = "text-embedding-3-large"
 DEFAULT_LIMIT = 15
 
@@ -50,10 +52,10 @@ def configure_logging(verbose: bool) -> None:
 def require_openai_client() -> OpenAI:
     if OpenAI is None:
         raise RuntimeError("Missing dependency: install the 'openai' Python package")
-    load_dotenv(BASE_DIR / ".env")
+    load_dotenv(ENV_FILE)
     api_key = os.getenv("OPENAI_API_KEY", "").strip()
     if not api_key:
-        raise RuntimeError("Missing OPENAI_API_KEY in environment or .env")
+        raise RuntimeError(f"Missing OPENAI_API_KEY in environment or {ENV_FILE}")
     logger.debug("Loaded OpenAI API key from environment")
     return OpenAI(api_key=api_key)
 
@@ -65,7 +67,7 @@ def require_zvec() -> None:
 
 def zvec_path_for_model(model: str) -> Path:
     slug = re.sub(r"[^a-zA-Z0-9._-]+", "-", model).strip("-") or "embedding-model"
-    return BASE_DIR / "output" / f"hn-rss-articles-{slug}.zvec"
+    return CACHE_DIR / f"hn-rss-articles-{slug}.zvec"
 
 
 def embed_texts(client: OpenAI, model: str, inputs: list[str]) -> list[list[float]]:

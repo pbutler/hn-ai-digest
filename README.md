@@ -5,6 +5,7 @@ Utility scripts for downloading the Hacker News RSS feed, parsing linked article
 ## Environment
 
 This project uses `uv` to manage a local virtual environment and dependencies.
+Runtime configuration is loaded from `~/.config/hn-ai-digest/env`.
 
 ## Common Commands
 

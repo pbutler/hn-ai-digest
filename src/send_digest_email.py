@@ -20,7 +20,8 @@ from markdown import markdown as markdown_to_html
 DEFAULT_INPUT_PATH = "-"
 DEFAULT_TO_EMAIL = "pjbutler@gmail.com"
 HTTP_USER_AGENT = "hn-ai-digest-bot/2.0 (+https://news.ycombinator.com/)"
-BASE_DIR = Path("/Users/pbutler/Documents/HackerNews")
+CONFIG_DIR = Path.home() / ".config" / "hn-ai-digest"
+ENV_FILE = CONFIG_DIR / "env"
 MAX_EMAIL_EXCERPT_CHARS = 1000
 
 
@@ -341,7 +342,7 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    load_dotenv(BASE_DIR / ".env")
+    load_dotenv(ENV_FILE)
 
     if args.input == "-":
         raw_input = sys.stdin.read()
