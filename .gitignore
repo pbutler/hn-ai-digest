@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+
+.env
+output/
+
+src/__pycache__/
+src/out
+src/err
+src/tmp
